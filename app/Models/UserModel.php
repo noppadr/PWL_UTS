@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable; // implementasi class Authenticatable
 
+
 class UserModel extends Authenticatable
 {
     use HasFactory;
@@ -20,4 +21,10 @@ class UserModel extends Authenticatable
     /**
      * Relasi ke tabel level
      */
+
+
+    public function level(): BelongsTo
+    {
+        return $this->belongsTo(LevelModel::class, 'level_id', 'level_id');
+    }
 }
