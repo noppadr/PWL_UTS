@@ -64,7 +64,7 @@
     var dataUser;
     $(document).ready(function() {
         dataUser = $('#table_user').DataTable({
-            serverSide: true,
+            serverSide: true, // serverSide: true, jika ingin menggunakan server side processing
             ajax: {
                 "url": "{{ url('user/list') }}",
                 "dataType": "json",
@@ -75,7 +75,7 @@
             },
             columns: [
                 {
-                    data: "DT_RowIndex",
+                    data: "DT_RowIndex", // nomor urut dari laravel datatable addIndexColumn()
                     className: "text-center",
                     orderable: false,
                     searchable: false
@@ -97,8 +97,8 @@
                 },
                 {
                     data: "aksi",
-                    orderable: false,
-                    searchable: false
+                    orderable: false, // orderable: true, jika ingin kolom bisa diurutkan
+                    searchable: false // searchable: true, jika ingin kolom bisa dicari
                 }
             ]
         });
