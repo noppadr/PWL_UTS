@@ -1,83 +1,73 @@
 @extends('layouts.template')
 
 @section('content')
-    <div class="card card-outline card-primary">
-        <div class="card-header">
-            <h3 class="card-title">{{ $page->title }}</h3>
-            <div class="card-tools"></div>
-        </div>
-        <div class="card-body">
-            @empty($user)
-                <div class="alert alert-danger alert-dismissible">
-                    <h5><i class="icon fas fa-ban"></i> Kesalahan!</h5>
-                    Data yang Anda cari tidak ditemukan.
-                </div>
-                <a href="{{ url('user') }}" class="btn btn-sm btn-default mt-2">Kembali</a>
-            @else
-                <form method="POST" action="{{ url('/user/'.$user->user_id) }}" class="form-horizontal">
-                    @csrf
-                    {!! method_field('PUT') !!} <!-- Tambahkan baris ini untuk proses edit yang butuh method PUT -->
-                    
-                    <div class="form-group row">
-                        <label class="col-1 control-label col-form-label">Level</label>
-                        <div class="col-11">
-                            <select class="form-control" id="level_id" name="level_id" required>
-                                <option value="">- Pilih Level -</option>
-                                @foreach($level as $item)
-                                    <option value="{{ $item->level_id }}" @if($item->level_id == $user->level_id) selected @endif>
-                                        {{ $item->level_name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('level_id')
-                                <small class="form-text text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-1 control-label col-form-label">Username</label>
-                        <div class="col-11">
-                            <input type="text" class="form-control" id="username" name="username" value="{{ old('username', $user->username) }}" required>
-                            @error('username')
-                                <small class="form-text text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-1 control-label col-form-label">Nama</label>
-                        <div class="col-11">
-                            <input type="text" class="form-control" id="nama" name="nama" value="{{ old('nama', $user->nama) }}" required>
-                            @error('nama')
-                                <small class="form-text text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-1 control-label col-form-label">Password</label>
-                        <div class="col-11">
-                            <input type="password" class="form-control" id="password" name="password">
-                            @error('password')
-                                <small class="form-text text-danger">{{ $message }}</small>
-                            @else
-                                <small class="form-text text-muted">Abaikan (jangan diisi) jika tidak ingin mengganti password user.</small>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-1 control-label col-form-label"></label>
-                        <div class="col-11">
-                            <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
-                            <a class="btn btn-sm btn-default ml-1" href="{{ url('user') }}">Kembali</a>
-                        </div>
-                    </div>
-                </form>
-            @endempty
-        </div>
+<div class="card card-outline card-primary">
+    <div class="card-header">
+        <h3 class="card-title">{{ $page->title }}</h3>
+        <div class="card-tools"></div>
     </div>
+    <div class="card-body">
+        @empty($stok)
+            <div class="alert alert-danger alert-dismissible">
+                <h5><i class="icon fas fa-ban"></i> Kesalahan!</h5>
+                Data stok yang Anda cari tidak ditemukan.
+            </div>
+            <a href="{{ url('stok') }}" class="btn btn-sm btn-default mt-2">Kembali</a>
+        @else
+            <form method="POST" action="{{ url('/stok/'.$stok->stok_id) }}" class="form-horizontal">
+                @csrf
+                @method('PUT')
+
+                <div class="form-group row">
+                    <label class="col-2 col-form-label">Barang ID</label>
+                    <div class="col-10">
+                        <input type="number" class="form-control" name="barang_id" value="{{ old('barang_id', $stok->barang_id) }}" required>
+                        @error('barang_id')
+                            <small class="form-text text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-2 col-form-label">User ID</label>
+                    <div class="col-10">
+                        <input type="number" class="form-control" name="user_id" value="{{ old('user_id', $stok->user_id) }}" required>
+                        @error('user_id')
+                            <small class="form-text text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-2 col-form-label">Tanggal Stok</label>
+                    <div class="col-10">
+                        <input type="datetime-local" class="form-control" name="stok_tanggal" value="{{ old('stok_tanggal', \Carbon\Carbon::parse($stok->stok_tanggal)->format('Y-m-d\TH:i:s')) }}" required>
+                        @error('stok_tanggal')
+                            <small class="form-text text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-2 col-form-label">Jumlah Stok</label>
+                    <div class="col-10">
+                        <input type="number" class="form-control" name="stok_jumlah" value="{{ old('stok_jumlah', $stok->stok_jumlah) }}" required>
+                        @error('stok_jumlah')
+                            <small class="form-text text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-10 offset-2">
+                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                        <a href="{{ url('stok') }}" class="btn btn-sm btn-default">Kembali</a>
+                    </div>
+                </div>
+            </form>
+        @endempty
+    </div>
+</div>
 @endsection
 
 @push('css')
