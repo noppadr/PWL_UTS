@@ -1,41 +1,43 @@
-@extends('layouts.app')
+@extends('layouts.template')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                @if(empty($penjualan))
-                    <div class="card-header">Kesalahan</div>
-                    <div class="card-body">
-                        <div class="alert alert-danger">
-                            <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
-                            Data yang anda cari tidak ditemukan
-                        </div>
-                        <a href="{{ url('/penjualan') }}" class="btn btn-warning">Kembali</a>
-                    </div>
-                @else
-                    <div class="card-header">Detail Data Penjualan</div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label>Kode Penjualan</label>
-                            <input type="text" class="form-control" value="{{ $penjualan->penjualan_kode }}" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>Nama Pembeli</label>
-                            <input type="text" class="form-control" value="{{ $penjualan->pembeli }}" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label>Tanggal Penjualan</label>
-                            <input type="text" class="form-control" value="{{ $penjualan->penjualan_tanggal }}" readonly>
-                        </div>
-                        <div class="text-right mt-3">
-                            <a href="{{ url('/penjualan') }}" class="btn btn-secondary">Kembali</a>
-                        </div>
-                    </div>
-                @endif
+<div class="card card-outline card-primary">
+    <div class="card-header">
+        <h3 class="card-title">{{ $page->title }}</h3>
+        <div class="card-tools"></div>
+    </div>
+    <div class="card-body">
+        @empty($penjualan)
+            <div class="alert alert-danger alert-dismissible">
+                <h5><i class="icon fas fa-ban"></i> Kesalahan!</h5>
+                Data stok yang Anda cari tidak ditemukan.
             </div>
-        </div>
+        @else
+            <table class="table table-bordered table-striped table-hover table-sm">
+                <tr>
+                    <th>ID</th>
+                    <td>{{ $penjualan->penjualan_id }}</td>
+                </tr>
+                <tr>
+                    <th>Kode Penjualan</th>
+                    <td>{{ $penjualan->penjualan_kode }}</td>
+                <tr>
+                    <th>Nama Pembeli</th>
+                    <td>{{ $penjualan->pembeli }}</td>
+                </tr> 
+                <tr>
+                    <th>Tanggal Penjualan</th>
+                    <td>{{ $penjualan->penjualan_tanggal }}</td>
+                </tr>
+            </table>
+        @endempty
+        <a href="{{ url('penjualan') }}" class="btn btn-sm btn-default mt-2">Kembali</a>
     </div>
 </div>
 @endsection
+
+@push('css')
+@endpush
+
+@push('js')
+@endpush

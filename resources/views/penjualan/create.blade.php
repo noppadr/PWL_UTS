@@ -1,3 +1,7 @@
+@extends('layouts.template')
+
+@section('content')
+
 <form action="{{ url('/penjualan') }}" method="POST" id="form-tambah">
     @csrf
     <div id="modal-master" class="modal-dialog modal-lg" role="document">

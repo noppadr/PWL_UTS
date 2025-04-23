@@ -9,7 +9,7 @@
         <div class="card-body">
             @empty($level)
                 <div class="alert alert-danger alert-dismissible">
-                    <h5><i class="icon fas fa-ban"></i> Kesalahan!</h5>
+                    <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                     Data yang Anda cari tidak ditemukan.
                 </div>
                 <a href="{{ url('level') }}" class="btn btn-sm btn-default mt-2">Kembali</a>
@@ -17,7 +17,6 @@
                 <form method="POST" action="{{ url('/level/' . $level->level_id) }}" class="form-horizontal">
                     @csrf
                     @method('PUT')
-
                     <div class="form-group row">
                         <label class="col-1 control-label col-form-label">Level Kode</label>
                         <div class="col-11">
