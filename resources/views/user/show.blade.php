@@ -1,4 +1,5 @@
 @extends('layouts.template')
+
 @section('content')
 <div class="card card-outline card-primary">
     <div class="card-header">
@@ -12,6 +13,9 @@
                 Data yang Anda cari tidak ditemukan.
             </div>
         @else
+            {{-- @php
+                 $url = $user->foto ? asset('storage/foto/' . $user->foto) : asset('images/default.png');
+            @endphp --}}
             <table class="table table-bordered table-striped table-hover table-sm">
                 <tr>
                     <th>ID</th>
@@ -33,6 +37,12 @@
                     <th>Password</th>
                     <td>********</td>
                 </tr>
+                {{-- <tr>
+                    <th>Foto</th>
+                    <td>
+                        <img src="{{ $url }}" width="120" class="img-thumbnail">
+                    </td>
+                </tr> --}}
             </table>
         @endempty
         <a href="{{ url('user') }}" class="btn btn-sm btn-default mt-2">Kembali</a>
