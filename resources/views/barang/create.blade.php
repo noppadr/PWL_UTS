@@ -7,7 +7,7 @@
             <div class="card-tools"></div>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{ url('barang') }}" class="form-horizontal" enctype="multipart/form-data">
+            <form method="POST" action="{{ url('barang') }}" id="form-create" class="form-horizontal" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group row">
                     <label class="col-1 control-label col-form-label">Kategori</label>
@@ -19,30 +19,34 @@
                             @endforeach
                         </select>
                         @error('kategori_id')
-                            <small class="form-text text-danger">{{ $message }}</small>
+                            <small class="error-text form-text text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
+
                 <div class="form-group row">
                     <label class="col-1 control-label col-form-label">Kode Barang</label>
                     <div class="col-11">
                         <input type="text" class="form-control" id="barang_kode" name="barang_kode"
-                            value="{{ old('barang_kode') }}" required>
+                            value="{{ old('barang_kode') }}" maxlength="6" required>
+                        <small class="form-text text-muted">Masukkan kode barang (maksimal 6 karakter)</small>
                         @error('barang_kode')
-                            <small class="form-text text-danger">{{ $message }}</small>
+                            <small class="error-text form-text text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
+
                 <div class="form-group row">
                     <label class="col-1 control-label col-form-label">Nama Barang</label>
                     <div class="col-11">
                         <input type="text" class="form-control" id="barang_nama" name="barang_nama"
-                            value="{{ old('barang_nama') }}" required>
+                            value="{{ old('barang_nama') }}" minlength="3" maxlength="50">
                         @error('barang_nama')
-                            <small class="form-text text-danger">{{ $message }}</small>
+                            <small class="error-text form-text text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
+
                 <div class="form-group row">
                     <label class="col-1 control-label col-form-label">Harga Jual</label>
                     <div class="col-11">
@@ -86,5 +90,60 @@
 @endsection
 @push('css')
 @endpush
+
 @push('js')
+    <script>
+        $(document).ready(function() {
+            $('#form-create').validate({
+                rules: {
+                    kategori_id: {
+                        required: true
+                    },
+                    barang_kode: {
+                        required: true,
+                        maxlength: 6
+                    },
+                    barang_nama: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 50
+                    },
+                    harga_jual: {
+                        required: true
+                    },
+                    stok: {
+                        required: true
+                    }
+                },
+                messages: {
+                    kategori_id: {
+                        required: "Kategori harus dipilih"
+                    },
+                    barang_kode: {
+                        required: "Kode Barang harus diisi",
+                        maxlength: "Kode Barang maksimal 6 karakter"
+                    },
+                    barang_nama: {
+                        required: "Nama Barang harus diisi",
+                        minlength: "Nama Barang minimal 3 karakter",
+                        maxlength: "Nama Barang maksimal 50 karakter"
+                    },
+                    harga_jual: {
+                        required: "Harga Jual harus diisi"
+                    },
+                    stok: {
+                        required: "Stok harus diisi"
+                    }
+                },
+                errorElement: "small",
+                errorClass: "error-text form-text text-danger",
+                highlight: function(element) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element) {
+                    $(element).removeClass('is-invalid');
+                }
+            })
+        })
+    </script>
 @endpush

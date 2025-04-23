@@ -20,7 +20,7 @@
                             @endforeach
                         </select>
                         @error('level_id')
-                            <small class="form-text text-danger">{{ $message }}</small>
+                            <small class="error-text form-text text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
@@ -36,7 +36,6 @@
                     </div>
                 </div>
                 
-
                 <div class="form-group row">
                     <label class="col-1 control-label col-form-label">Nama</label>
                     <div class="col-11">
@@ -78,6 +77,9 @@
     $(document).ready(function () {
         $('#form-create').validate({
             rules: {
+                level_id: {
+                    required: true
+                },
                 username: {
                     required: true,
                     maxlength: 6
@@ -93,6 +95,9 @@
                 }
             },
             messages: {
+                level_id: {
+                        required: "Level harus dipilih"
+                    },
                 username: {
                     required: "Username harus diisi",
                     maxlength: "Username maksimal 6 karakter"

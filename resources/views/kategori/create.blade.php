@@ -8,19 +8,19 @@
         </div>
         <div class="card-body">
             @if (session('error'))
-                <div class="alert alert-danger">{{session('error')}}</div>
+                <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
-            
-            <form method="POST" action="{{ url('kategori') }}" class="form-horizontal">
+
+            <form method="POST" action="{{ url('kategori') }}" id="form-create" class="form-horizontal">
                 @csrf
                 <div class="form-group row">
                     <label class="col-sm-2 control-label col-form-label">Kategori Kode</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="kategori_kode" name="kategori_kode"
-                            value="{{ old('kategori_kode') }}" required maxlength="5">
+                            value="{{ old('kategori_kode') }}" maxlength="5">
                         <small class="form-text text-muted">Masukkan kode kategori (maksimal 5 karakter)</small>
                         @error('kategori_kode')
-                            <small class="form-text text-danger">{{ $message }}</small>
+                            <small class="error-text form-text text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
@@ -28,9 +28,9 @@
                     <label class="col-sm-2 control-label col-form-label">Kategori Nama</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="kategori_nama" name="kategori_nama"
-                            value="{{ old('kategori_nama') }}" required>
+                            value="{{ old('kategori_nama') }}" minlength="3">
                         @error('kategori_nama')
-                            <small class="form-text text-danger">{{ $message }}</small>
+                            <small class="error-text form-text text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
@@ -49,4 +49,38 @@
 @endpush
 
 @push('js')
+    <script>
+        $(document).ready(function() {
+            $('#form-create').validate({
+                rules: {
+                    kategori_kode: {
+                        required: true,
+                        maxlength: 5
+                    },
+                    kategori_nama: {
+                        required: true,
+                        minLength: 3
+                    }
+                },
+                messages: {
+                    kategori_kode: {
+                        required: "Kategori Kode harus diisi",
+                        maxlength: "Kategori Kode maksimal 5 karakter"
+                    },
+                    kategori_nama: {
+                        required: "Kategori Nama harus diisi",
+                        minlength: "Kategori Nama minimal 3 karakter"
+                    }
+                },
+                errorElement: "small",
+                errorClass: "error-text form-text text-danger",
+                highlight: function(element) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+        });
+    </script>
 @endpush
