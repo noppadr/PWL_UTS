@@ -48,14 +48,6 @@
                         <th>Kategori</th>
                         <td>{{ $barang->kategori->kategori_nama }}</td>
                     </tr>
-                    <tr>
-                        <th>Dibuat Pada</th>
-                        <td>{{ $barang->created_at }}</td>
-                    </tr>
-                    <tr>
-                        <th>Diperbarui Pada</th>
-                        <td>{{ $barang->updated_at }}</td>
-                    </tr>
                 </table>
             @endempty
             <a href="{{ url('barang') }}" class="btn btn-sm btn-default mt-2">Kembali</a>

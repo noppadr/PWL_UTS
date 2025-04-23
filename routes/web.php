@@ -3,10 +3,12 @@
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [WelcomeController::class, 'index']);
 
@@ -62,8 +64,21 @@ Route::prefix('stok')->group(function () {
     Route::get('/create', [StokController::class, 'create']);
     Route::get('/{id}/show', [StokController::class, 'show']);
     Route::post('/', [StokController::class, 'store']);
-    Route::get('/{id}', [StokController::class, 'show']);
+    Route::get('/{id}', [StokController::class, 'show']);  
     Route::get('/{id}/edit', [StokController::class, 'edit']);
     Route::put('/{id}', [StokController::class, 'update']);
     Route::get('/{id}/delete', [StokController::class, 'destroy']);
+    
+});
+Route::prefix('penjualan')->group(function () {
+    Route::get('/', [PenjualanController::class, 'index']);
+    Route::post('/list', [PenjualanController::class, 'list']);
+    Route::get('/create', [PenjualanController::class, 'create']);
+    Route::get('/{id}/show', [PenjualanController::class, 'show']);
+    Route::post('/', [PenjualanController::class, 'store']);
+    Route::get('/{id}', [PenjualanController::class, 'show']);
+    Route::get('/{id}/edit', [PenjualanController::class, 'edit']);
+    Route::put('/{id}', [PenjualanController::class, 'update']);
+    Route::get('/{id}/delete', [PenjualanController::class, 'destroy']);
+    Route::get('/{id}/delete', [PenjualanController::class, 'confirm_ajax']);
 });
