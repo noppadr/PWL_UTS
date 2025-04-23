@@ -7,7 +7,7 @@
             <div class="card-tools"></div>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{ url('user') }}" class="form-horizontal">
+            <form method="POST" action="{{ url('user') }}" id="form-create" class="form-horizontal">
                 @csrf
 
                 <div class="form-group row">
@@ -29,20 +29,21 @@
                     <label class="col-1 control-label col-form-label">Username</label>
                     <div class="col-11">
                         <input type="text" class="form-control" id="username" name="username"
-                            value="{{ old('username') }}" required>
+                            value="{{ old('username') }}" maxlength="6" required>
                         @error('username')
-                            <small class="form-text text-danger">{{ $message }}</small>
+                            <small class="error-text form-text text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
+                
 
                 <div class="form-group row">
                     <label class="col-1 control-label col-form-label">Nama</label>
                     <div class="col-11">
-                        <input type="text" class="form-control" id="nama" name="nama" value="{{ old('nama') }}"
-                            required>
+                        <input type="text" class="form-control" id="nama" name="nama" 
+                            value="{{ old('nama') }}" minlength="3" maxlength="50">
                         @error('nama')
-                            <small class="form-text text-danger">{{ $message }}</small>
+                            <small class="error-text form-text text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
@@ -50,9 +51,9 @@
                 <div class="form-group row">
                     <label class="col-1 control-label col-form-label">Password</label>
                     <div class="col-11">
-                        <input type="password" class="form-control" id="password" name="password" required>
+                        <input type="password" class="form-control" id="password" name="password" minlength="6">
                         @error('password')
-                            <small class="form-text text-danger">{{ $message }}</small>
+                            <small class="error-text form-text text-danger">{{ $message }}</small>
                         @enderror
                     </div>
                 </div>
@@ -73,4 +74,49 @@
 @endpush
 
 @push('js')
+<script>
+    $(document).ready(function () {
+        $('#form-create').validate({
+            rules: {
+                username: {
+                    required: true,
+                    maxlength: 6
+                },
+                nama: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 50
+                },
+                password: {
+                    required: true,
+                    minlength: 6
+                }
+            },
+            messages: {
+                username: {
+                    required: "Username harus diisi",
+                    maxlength: "Username maksimal 6 karakter"
+                },
+                nama: {
+                    required: "Nama harus diisi",
+                    minlength: "Nama minimal 3 karakter",
+                    maxlength: "Nama maksimal 50 karakter"
+                },
+                password: {
+                    required: "Password harus diisi",
+                    minlength: "Password minimal 6 karakter"
+                }
+            },
+            errorElement: "small",
+            errorClass: "error-text form-text text-danger",
+            highlight: function (element) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+    });
+</script>
 @endpush
+

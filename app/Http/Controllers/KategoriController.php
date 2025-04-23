@@ -41,7 +41,7 @@ class KategoriController extends Controller
                 $btn .= '<form class="d-inline-block" method="POST" action="' . url('/kategori/' . $kategori->kategori_id) . '">'
                     . csrf_field() . method_field('DELETE') .
                     '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\')">Hapus</button>
-            </form>';
+                </form>';
                 return $btn;
             })
 
@@ -73,17 +73,26 @@ class KategoriController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'kategori_kode'  => 'required|string|max:3',
+        // Validate the request - Updated max length to 5
+        $validatedData = $request->validate([
+            'kategori_kode'  => 'required|string|max:5',
             'kategori_nama'  => 'required|string'
         ]);
 
-        KategoriModel::create([
-            'kategori_kode'  => $request->kategori_kode,
-            'kategori_nama'  => $request->kategori_nama,
-        ]);
-
-        return redirect('/kategori')->with('success', 'Data kategori berhasil disimpan');
+        try {
+            // Create the record
+            KategoriModel::create([
+                'kategori_kode'  => $request->kategori_kode,
+                'kategori_nama'  => $request->kategori_nama,
+            ]);
+            
+            return redirect('/kategori')->with('success', 'Data kategori berhasil disimpan');
+        } catch (\Exception $e) {
+            // Log any exceptions
+            return redirect('/kategori/create')
+                ->withInput()
+                ->with('error', 'Gagal menyimpan data: ' . $e->getMessage());
+        }
     }
 
     public function show(string $id)
@@ -134,24 +143,31 @@ class KategoriController extends Controller
 
     public function update(Request $request, string $id)
     {
+        // Updated max length to 5
         $request->validate([
-            'kategori_kode'  => 'required|string|max:3',
+            'kategori_kode'  => 'required|string|max:5',
             'kategori_nama'  => 'required|string'
         ]);
 
-        KategoriModel::find($id)->update([
-            'kategori_kode'  => $request->kategori_kode,
-            'kategori_nama'  => $request->kategori_nama
-        ]);
+        try {
+            KategoriModel::find($id)->update([
+                'kategori_kode'  => $request->kategori_kode,
+                'kategori_nama'  => $request->kategori_nama
+            ]);
 
-        return redirect('/kategori')->with('success', 'Data kategori berhasil diubah');
+            return redirect('/kategori')->with('success', 'Data kategori berhasil diubah');
+        } catch (\Exception $e) {
+            return redirect('/kategori/' . $id . '/edit')
+                ->withInput()
+                ->with('error', 'Gagal mengubah data: ' . $e->getMessage());
+        }
     }
 
     public function destroy(string $id)
     {
         $check = KategoriModel::find($id);
         if (!$check) {
-            return redirect('/kategori')->with('error', 'Data user tidak ditemukan');
+            return redirect('/kategori')->with('error', 'Data kategori tidak ditemukan');
         }
 
         try {
@@ -159,8 +175,7 @@ class KategoriController extends Controller
 
             return redirect('/kategori')->with('success', 'Data kategori berhasil dihapus');
         } catch (\Illuminate\Database\QueryException $e) {
-            return redirect('/kategori')->with('error', 'Data kategori 
-                gagal dihapus karena masih terdapat tabel lain yang terkait dengan data ini');
+            return redirect('/kategori')->with('error', 'Data kategori gagal dihapus karena masih terdapat tabel lain yang terkait dengan data ini');
         }
     }
 }

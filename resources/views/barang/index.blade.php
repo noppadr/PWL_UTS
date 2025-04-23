@@ -137,10 +137,6 @@
                 ]
             });
 
-            $('#kategori_id').on('change', function() {
-                dataBarang.ajax.reload();
-            });
-
             function formatRupiah(angka) {
                 return new Intl.NumberFormat('id-ID').format(angka);
             }

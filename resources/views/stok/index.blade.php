@@ -114,10 +114,6 @@
                     }
                 ]
             });
-
-            $('#user_id').on('change', function() {
-                dataStok.ajax.reload();
-            });
         });
     </script>
 @endpush

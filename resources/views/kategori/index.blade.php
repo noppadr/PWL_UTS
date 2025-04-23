@@ -6,82 +6,78 @@
         <h3 class="card-title">Data Kategori yang terdaftar pada sistem</h3>
         <div class="card-tools">
             <div class="row">
-                <button onclick="modalAction('{{ url('/kategori/create') }}')" class="btn btn-primary mr-2">
+                <a href="{{ url('/kategori/create') }}" class="btn btn-primary mr-2">
                     Tambah Data
-                </button>
+                </a>
             </div>
         </div>
     </div>
-        <div class="card-body">
-            @if (session('success'))
-                <div class="alert alert-success">{{session('success')}}</div>
-            @endif
-            @if (session('error'))
-                <div class="alert alert-danger">{{session('error')}}</div>
-            @endif
+    <div class="card-body">
+        @if (session('success'))
+            <div class="alert alert-success">{{session('success')}}</div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger">{{session('error')}}</div>
+        @endif
 
-            <table class="table table-bordered table-striped table-hover table-sm" id="table_kategori">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Kategori Kode</th>
-                        <th>Kategori Nama</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
+        <table class="table table-bordered table-striped table-hover table-sm" id="table_kategori">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Kategori Kode</th>
+                    <th>Kategori Nama</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+        </table>
     </div>
-    <div  id="myModal"  class="modal  fade  animate  shake"  tabindex="-1"  role="dialog"  data-backdrop="static" 
-        data-keyboard="false" data-width="75%" aria-hidden="true"></div>
+</div>
 @endsection
 
 @push('css')
 @endpush
 
 @push('js')
-    <script>
-        function modalAction(url = ''){ 
-            $('#myModal').load(url,function(){ 
-                $('#myModal').modal('show'); 
-            }); 
-        }
-        var dataKategori;
-        $(document).ready(function() {
-            dataKategori = $('#table_kategori').DataTable({
-                serverSide: true,
-                ajax: {
-                    "url": "{{url('kategori/list')}}",
-                    "dataType": "json",
-                    "type": "POST",
+<script>
+    var dataKategori;
+    $(document).ready(function() {
+        dataKategori = $('#table_kategori').DataTable({
+            serverSide: true,
+            ajax: {
+                "url": "{{url('kategori/list')}}",
+                "dataType": "json",
+                "type": "POST",
+                "data": function(d) {
+                    d._token = "{{ csrf_token() }}";
+                }
+            },
+            columns: [
+                {
+                    data: "DT_RowIndex",
+                    className: "text-center",
+                    orderable: false,
+                    searchable: false
                 },
-                columns: [
-                    {
-                        data: "DT_RowIndex",
-                        className: "text-center",
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: "kategori_kode",
-                        className: "",
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: "kategori_nama",
-                        className: "",
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: "aksi",
-                        className: "",
-                        orderable: false,
-                        searchable: false
-                    }
-                ]
-            });
+                {
+                    data: "kategori_kode",
+                    className: "",
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: "kategori_nama",
+                    className: "",
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: "aksi",
+                    className: "",
+                    orderable: false,
+                    searchable: false
+                }
+            ]
         });
-    </script>
+    });
+</script>
 @endpush
