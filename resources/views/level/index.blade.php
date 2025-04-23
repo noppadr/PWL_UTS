@@ -1,13 +1,17 @@
 @extends('layouts.template')
 
 @section('content')
-    <div class="card card-outline card-primary">
-        <div class="card-header">
-            <h3>{{ $page->title }}</h3>
-            <div class="card-tools">
-                <a class="btn btn-sm btn-primary mt-1" href="{{ url('level/create') }}">Tambah</a>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Data Level yang terdaftar pada sistem</h3>
+        <div class="card-tools">
+            <div class="row">
+                <button onclick="modalAction('{{ url('/level/create') }}')" class="btn btn-primary mr-2">
+                    Tambah Data
+                </button>
             </div>
         </div>
+    </div>
         <div class="card-body">
             @if (session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
