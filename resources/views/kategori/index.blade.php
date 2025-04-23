@@ -6,7 +6,7 @@
         <h3 class="card-title">Data Kategori yang terdaftar pada sistem</h3>
         <div class="card-tools">
             <div class="row">
-                <button onclick="modalAction('{{ url('/user/create') }}')" class="btn btn-primary mr-2">
+                <button onclick="modalAction('{{ url('/kategori/create') }}')" class="btn btn-primary mr-2">
                     Tambah Data
                 </button>
             </div>

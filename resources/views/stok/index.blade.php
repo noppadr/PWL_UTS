@@ -86,7 +86,7 @@
                         data: "barang.barang_nama", // Mengambil nama barang dari relasi
                         className: "",
                         orderable: false,
-                        searchable: false
+                        searchable: true
                     },
                     {
                         data: "user.nama", // Mengambil nama user dari relasi
@@ -98,7 +98,7 @@
                         data: "stok_tanggal",
                         className: "",
                         orderable: true,
-                        searchable: true
+                        searchable: false
                     },
                     {
                         data: "stok_jumlah",

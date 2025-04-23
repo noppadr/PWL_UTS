@@ -28,6 +28,7 @@
                     <th>Kode Penjualan</th>
                     <th>Tanggal</th>
                     <th>Pembeli</th>
+                    <th>Total Harga</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -72,13 +73,54 @@
         });
     }
 
+    function viewDetails(penjualan_id) {
+        modalAction('{{ url('/penjualan/details') }}/' + penjualan_id);
+    }
+
+    function deleteData(penjualan_id) {
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Data penjualan akan dihapus secara permanen!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '{{ url("/penjualan/delete") }}/' + penjualan_id,
+                    method: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function (res) {
+                        if (res.status) {
+                            $('#table_penjualan').DataTable().ajax.reload();
+                            Swal.fire('Sukses', res.message, 'success');
+                        } else {
+                            Swal.fire('Gagal', res.message, 'error');
+                        }
+                    },
+                    error: function () {
+                        Swal.fire('Error', 'Terjadi kesalahan saat menghapus data.', 'error');
+                    }
+                });
+            }
+        });
+    }
+
     $(document).ready(function () {
         $('#table_penjualan').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ url('penjualan/list') }}",
-                type: 'POST'
+                url: "{{ url('penjualan_detail/list') }}",
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                }
             },
             columns: [
                 { 
@@ -89,19 +131,27 @@
                     searchable: false 
                 },
                 { 
-                    data: 'penjualan_kode', 
-                    name: 'penjualan_kode', 
+                    data: 'penjualan_id', 
+                    name: 'penjualan_id', 
                     width: "15%" 
                 },
                 { 
-                    data: 'penjualan_tanggal', 
-                    name: 'penjualan_tanggal', 
+                    data: 'barang_id', 
+                    name: 'barang_id', 
                     width: "20%" 
                 },
                 { 
-                    data: 'pembeli', 
-                    name: 'pembeli', 
+                    data: 'jumlah', 
+                    name: 'jumlah', 
                     width: "20%" 
+                },
+                { 
+                    data: 'harga', 
+                    name: 'harga', 
+                    width: "15%", 
+                    render: function (data) {
+                        return 'Rp ' + data.toLocaleString('id-ID');
+                    }
                 },
                 { 
                     data: 'aksi', 
