@@ -6,9 +6,9 @@
             <h3 class="card-title">Data Stok yang terdaftar pada sistem</h3>
             <div class="card-tools">
                 <div class="row">
-                    <button onclick="modalAction('{{ url('/stok/create') }}')" class="btn btn-primary mr-2">
+                    <a href="{{ url('/stok/create') }}" class="btn btn-primary mr-2">
                         Tambah Data
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

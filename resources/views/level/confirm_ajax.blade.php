@@ -17,7 +17,7 @@
         </div>
     </div>
 @else
-    <form action="{{ url('/level/' . $level->level_id) }}" method="POST" id="form-delete">
+    <form action="{{ url('/level/' . $level->level_id . '/delete_ajax') }}" method="POST" id="form-delete">
         @csrf
         @method('DELETE')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
@@ -43,41 +43,59 @@
                             <td class="col-9">{{ $level->level_nama }}</td>
                         </tr>
                     </table>
-                    
-                    @if(session('error'))
-                        <div class="alert alert-danger mt-3">
-                            {{ session('error') }}
-                        </div>
-                    @endif
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
-                    <button type="submit" class="btn btn-primary" onclick="return confirm('Anda yakin ingin menghapus data level ini?')">Ya, Hapus</button>
+                    <button type="submit" class="btn btn-primary">Ya, Hapus</button>
                 </div>
             </div>
         </div>
     </form>
-    
-    @if(session('success'))
     <script>
         $(document).ready(function() {
-            // Display success message after redirect
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil',
-                text: "{{ session('success') }}"
+            $("#form-delete").validate({
+                rules: {},
+                submitHandler: function(form) {
+                    $.ajax({
+                        url: form.action,
+                        type: form.method,
+                        data: $(form).serialize(),
+                        success: function(response) {
+                            if (response.status) {
+                                $('#myModal').modal('hide');
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: response.message
+                                });
+                                dataLevel.ajax.reload();
+                            } else {
+                                $('.error-text').text('');
+                                $.each(response.msgField, function(prefix, val) {
+                                    $('#error-' + prefix).text(val[0]);
+                                });
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Terjadi Kesalahan',
+                                    text: response.message
+                                });
+                            }
+                        }
+                    });
+                    return false;
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
             });
-            
-            // Close modal if it exists
-            if ($('#myModal').length) {
-                $('#myModal').modal('hide');
-            }
-            
-            // Redirect back to index page after short delay
-            setTimeout(function() {
-                window.location.href = "{{ url('/level') }}";
-            }, 1500);
         });
     </script>
-    @endif
 @endempty

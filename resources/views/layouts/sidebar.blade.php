@@ -66,20 +66,21 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/penjualan_detail') }}" class="nav-link {{ $activeMenu == 'transaksi_penjualan' ? 'active' : '' }}">
+                <a href="{{ url('/penjualan_detail') }}"
+                    class="nav-link {{ $activeMenu == 'transaksi_penjualan' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-cash-register"></i>
                     <p>Transaksi Penjualan</p>
                 </a>
             </li>
 
-            {{-- Lainnya
-            <li class="nav-header text-white">Lainnya</li>
+            {{-- Opsi --}}
+            <li class="nav-header text-white">Opsi</li>
             <li class="nav-item">
-                <a href="{{ route('logout.confirm') }}" class="nav-link text-danger">
-                    <i class="nav-icon fas fa-sign-out-alt text-danger"></i>
+                <a href="{{ url('/logout') }}" class="nav-link {{ $activeMenu == 'logout' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-sign-out-alt"></i>
                     <p class="text-danger">Logout</p>
                 </a>
-            </li> --}}
+            </li>
         </ul>
     </nav>
 </div>

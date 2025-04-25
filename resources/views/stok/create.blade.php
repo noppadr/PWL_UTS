@@ -15,7 +15,7 @@
                     <select class="form-control" id="barang_id" name="barang_id" required>
                         <option value="">- Pilih Barang -</option>
                         @foreach($barang as $item)
-                            <option value="{{ $item->id }}">{{ $item->barang_nama }}</option>
+                            <option value="{{ $item->barang_id }}">{{ $item->barang_nama }}</option>
                         @endforeach
                     </select>
                     @error('barang_id')
